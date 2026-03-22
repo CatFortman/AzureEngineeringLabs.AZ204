@@ -7,9 +7,9 @@ namespace Cosmos_DB_SQL_API_Example
     {
         private const string ENPOINT_URI = "https://<your-cosmos-db-account>.documents.azure.com:443/";
         private const string KEY = "<your-primary-key>";
-        private CosmosClient client;
-        private Database database;
-        private Container container;
+        private CosmosClient? client;
+        private Database? database;
+        private Container? container;
         static void Main(string[] args)
         {
             Program program = new Program();
@@ -36,7 +36,7 @@ namespace Cosmos_DB_SQL_API_Example
             container = await database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
             // Create some documents in the collection
-            Person newItem = new Person
+            Person newItem1 = new Person
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "John Doe",
@@ -59,13 +59,96 @@ namespace Cosmos_DB_SQL_API_Example
                 RegistrationDate = DateTime.UtcNow
             };
 
+            await this.CreateDocumentIfNotExistsAsync(databaseName, containerName, newItem1);
 
-            await this.CreateDocumentIfNotExistsAsync(databaseName, containerName, newItem);
-            Console.WriteLine("Item created successfully.");
+
+            Person newItem2 = new Person
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Jane Smith",
+                Age = 32,
+                Email = "jane.smith@example.com",
+                Devices = new Device[]
+                {
+                    new Device { Id = "device1", Type = "Tablet" },
+                    new Device { Id = "device2", Type = "Smartphone" }
+                },
+                Gender = "Female",
+                Address = new Address
+                {
+                    Street = "404 Main St",
+                    City = "Anytown",
+                    State = "CA",
+                    ZipCode = "54321"
+                },
+                IsRegistered = true,
+                RegistrationDate = DateTime.UtcNow
+            };
+
+
+            await this.CreateDocumentIfNotExistsAsync(databaseName, containerName, newItem2);
+
+            // Make some queries against the collection
+            this.SendMessageToConsoleAndWait("Querying for items with LINQ query...");
+
+            // Find documents using LINQ query
+            IQueryable<Person> queryable = container.GetItemLinqQueryable<Person>();
+            var results = queryable.Where(p => p.Age > 20).ToList();
+
+            Console.WriteLine($"Found {results.Count} items with Age > 20:");
+            foreach (var item in results)
+            {
+                Console.WriteLine($"- {item.Name} (Age: {item.Age}, Email: {item.Email})");
+            }
+
+            // Find documents using SQL query
+            this.SendMessageToConsoleAndWait("Querying for items with SQL query...");
+
+            var sqlQueryText = "SELECT * FROM Person c WHERE c.Gender = 'Female'";
+            QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
+            FeedIterator<Person> queryResultSetIterator = container.GetItemQueryIterator<Person>(queryDefinition);
+
+            List<Person> sqlResults = new List<Person>();
+            while (queryResultSetIterator.HasMoreResults)
+            {
+                FeedResponse<Person> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+                sqlResults.AddRange(currentResultSet);
+            }
+
+            Console.WriteLine($"Found {sqlResults.Count} items with Gender = 'Female':");
+
+            foreach (var item in sqlResults)
+            {
+                Console.WriteLine($"- {item.Name} (Age: {item.Age}, Email: {item.Email})");
+            }
+
+            // Updarte documents in the collection
+            this.SendMessageToConsoleAndWait($"Updating documents in the collection {containerName}...");
+
+            newItem2.Name = "Mary Smith";
+            newItem2.Age = 28;
+            await container.UpsertItemAsync(newItem2);
+
+            this.SendMessageToConsoleAndWait($"Document with id {newItem2.Id} updated successfully.");
+
+            // Delete a single document from the collection
+            this.SendMessageToConsoleAndWait($"Deleting document with id {newItem1.Id}...");
+            await container.DeleteItemAsync<Person>(newItem1.Id, new PartitionKey(newItem1.Id));
+            this.SendMessageToConsoleAndWait($"Document with id {newItem1.Id} deleted successfully.");
+
+            // Clean up resources by deleting the database
+            this.SendMessageToConsoleAndWait($"Deleting database: {databaseName}...");
+            await database.DeleteAsync();
+            this.SendMessageToConsoleAndWait($"Database {databaseName} deleted successfully.");
         }
 
         private async Task CreateDocumentIfNotExistsAsync(string databaseName, string containerName, Person person)
         {
+            if (container == null)
+            {
+                throw new InvalidOperationException("Container is not initialized.");
+            }
+
             try
             {
                 ItemResponse<Person> response = await container.ReadItemAsync<Person>(person.Id, new PartitionKey(person.Id));
@@ -93,10 +176,10 @@ namespace Cosmos_DB_SQL_API_Example
         public string? Name { get; set; }
         public int Age { get; set; }
         public string? Email { get; set; }
-        public Device[] Devices { get; set; }
+        public Device[]? Devices { get; set; }
         public string? Gender { get; set; }
         public Address? Address { get; set; }
-        public bool IsRegistered { get; set; }  
+        public bool IsRegistered { get; set; }
         public DateTime RegistrationDate { get; set; }
     }
 
