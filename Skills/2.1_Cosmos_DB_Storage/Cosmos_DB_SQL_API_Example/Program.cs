@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Text.Json;
 using Microsoft.Azure.Cosmos;
 
 namespace Cosmos_DB_SQL_API_Example
@@ -23,15 +23,25 @@ namespace Cosmos_DB_SQL_API_Example
             Console.WriteLine("Starting Cosmos DB SQL API demo...");
 
             // Initialize Cosmos DB client and create database and container
-            string databaseName = "DemoDatabase" + Guid.NewGuid().ToString("N").Substring(0, 5);
+            string databaseName = "DemoDatabase" + Guid.NewGuid().ToString().Substring(0, 5);
             this.SendMessageToConsoleAndWait($"Creating database: {databaseName}");
 
-            client = new CosmosClient(ENPOINT_URI, KEY);
+            // Configure CosmosClient to use System.Text.Json with custom options
+            CosmosClientOptions cosmosClientOptions = new CosmosClientOptions()
+            {
+                UseSystemTextJsonSerializerWithOptions = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    WriteIndented = true,
+                    PropertyNameCaseInsensitive = true
+                }
+            };
+            client = new CosmosClient(ENPOINT_URI, KEY, cosmosClientOptions);
             database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
 
             // Create a new demo collection (container)
             // This creates a collection with a reserved throughput of 400 RU/s. You can adjust this value based on your needs.
-            string containerName = "collection" + Guid.NewGuid().ToString("N").Substring(0, 5);
+            string containerName = "collection" + Guid.NewGuid().ToString().Substring(0, 5);
             this.SendMessageToConsoleAndWait($"Creating container: {containerName}");
             container = await database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
@@ -85,26 +95,49 @@ namespace Cosmos_DB_SQL_API_Example
                 RegistrationDate = DateTime.UtcNow
             };
 
-
             await this.CreateDocumentIfNotExistsAsync(databaseName, containerName, newItem2);
+
+            Person newItem3 = new Person
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Judy Smith",
+                Age = 8,
+                Email = "judy.smith@example.com",
+                Devices = new Device[]
+                           {
+                    new Device { Id = "device1", Type = "Tablet" }
+                           },
+                Gender = "Female",
+                Address = new Address
+                {
+                    Street = "101 Main St",
+                    City = "Anytown",
+                    State = "IN",
+                    ZipCode = "456789"
+                },
+                IsRegistered = true,
+                RegistrationDate = DateTime.UtcNow
+            };
+
+            await this.CreateDocumentIfNotExistsAsync(databaseName, containerName, newItem3);
 
             // Make some queries against the collection
             this.SendMessageToConsoleAndWait("Querying for items with LINQ query...");
 
             // Find documents using LINQ query
-            IQueryable<Person> queryable = container.GetItemLinqQueryable<Person>();
+            IQueryable<Person> queryable = container.GetItemLinqQueryable<Person>(true);
             var results = queryable.Where(p => p.Age > 20).ToList();
 
             Console.WriteLine($"Found {results.Count} items with Age > 20:");
             foreach (var item in results)
             {
-                Console.WriteLine($"- {item.Name} (Age: {item.Age}, Email: {item.Email})");
+                Console.WriteLine($"- {item.Name} (Gender: {item.Gender}, Age: {item.Age}, Email: {item.Email})");
             }
 
             // Find documents using SQL query
             this.SendMessageToConsoleAndWait("Querying for items with SQL query...");
 
-            var sqlQueryText = "SELECT * FROM Person c WHERE c.Gender = 'Female'";
+            var sqlQueryText = "SELECT * FROM c WHERE c.gender = 'Female'";
             QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
             FeedIterator<Person> queryResultSetIterator = container.GetItemQueryIterator<Person>(queryDefinition);
 
@@ -119,7 +152,7 @@ namespace Cosmos_DB_SQL_API_Example
 
             foreach (var item in sqlResults)
             {
-                Console.WriteLine($"- {item.Name} (Age: {item.Age}, Email: {item.Email})");
+                Console.WriteLine($"- {item.Name} (Gender: {item.Gender}, Age: {item.Age}, Email: {item.Email})");
             }
 
             // Updarte documents in the collection
@@ -135,6 +168,24 @@ namespace Cosmos_DB_SQL_API_Example
             this.SendMessageToConsoleAndWait($"Deleting document with id {newItem1.Id}...");
             await container.DeleteItemAsync<Person>(newItem1.Id, new PartitionKey(newItem1.Id));
             this.SendMessageToConsoleAndWait($"Document with id {newItem1.Id} deleted successfully.");
+
+            var sqlQueryText2 = "SELECT * FROM Person";
+            QueryDefinition queryDefinition2 = new QueryDefinition(sqlQueryText2);
+            FeedIterator<Person> queryResultSetIterator2 = container.GetItemQueryIterator<Person>(queryDefinition2);
+
+            List<Person> sqlResults2 = new List<Person>();
+            while (queryResultSetIterator2.HasMoreResults)
+            {
+                FeedResponse<Person> currentResultSet = await queryResultSetIterator2.ReadNextAsync();
+                sqlResults2.AddRange(currentResultSet);
+            }
+
+            Console.WriteLine($"Found {sqlResults2.Count} items:");
+
+            foreach (var item in sqlResults2)
+            {
+                Console.WriteLine($"- {item.Name} (Gender: {item.Gender}, Age: {item.Age}, Email: {item.Email})");
+            }
 
             // Clean up resources by deleting the database
             this.SendMessageToConsoleAndWait($"Deleting database: {databaseName}...");
