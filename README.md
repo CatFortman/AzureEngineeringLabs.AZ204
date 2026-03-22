@@ -38,7 +38,7 @@ Here is a list of skills implemented in this repository that are covered in Deve
 * Skill 1.1: Implement solutions that use virtual machines (COMPLETED)
 * Skill 1.2: Create Azure App Service web apps (COMPLETED)
 * Skill 1.3: Implement Azure functions (COMPLETED)
-* Skill 2.1: Develop solutions that use Cosmos DB storage
+* Skill 2.1: Develop solutions that use Cosmos DB storage (COMPLETED)
 * Skill 2.2: Develop solutions that use Blob Storage
 * Skill 3.1: Implement user authentication and authorization
 * Skill 3.2: Implement secure cloud solutions
