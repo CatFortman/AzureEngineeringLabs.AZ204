@@ -9,6 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <none Include="app.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </none>
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.2.3" />
     <PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.2.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
