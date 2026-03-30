@@ -1,0 +1,8 @@
+{
+    "SourceSASConnectionString" : "<SAS Token for the Azure Storage Account>",
+    "SourceStorageAccountName" : "<Azure Storage Account Name>",  
+    "SourceContainerName" : "<Azure Storage Container Name>",
+    "DestinationSASConnectionString" : "<SAS Token for the Azure Storage Account>",
+    "DestinationStorageAccountName" : "<Azure Storage Account Name>",
+    "DestinationContainerName" : "<Azure Storage Destination Container Name>"
+}

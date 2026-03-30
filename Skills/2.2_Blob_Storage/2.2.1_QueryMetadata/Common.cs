@@ -2,7 +2,7 @@ using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Auth;
 using Microsoft.Azure.Storage.Blob;
 
-namespace BlobStorage
+namespace QueryMetadata
 {
     public class Common
     {

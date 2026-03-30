@@ -1,0 +1,5 @@
+{
+    "SASToken" : "<SAS Token for the Azure Storage Account>",
+    "StorageAccountName" : "<Azure Storage Account Name>",  
+    "ContainerName" : "<Azure Storage Container Name>"
+}

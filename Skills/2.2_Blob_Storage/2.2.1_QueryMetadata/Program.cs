@@ -1,4 +1,4 @@
-﻿namespace BlobStorage
+﻿namespace QueryMetadata
 {
     class Program
     {

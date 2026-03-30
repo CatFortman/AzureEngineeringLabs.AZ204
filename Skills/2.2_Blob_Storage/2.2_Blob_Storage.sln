@@ -2,7 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.2_Blob_Storage", "2.2_Blob_Storage.csproj", "{5A350CEB-AA52-50AC-67FD-00B3786B44FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.2.1_QueryMetadata", "2.2.1_QueryMetadata\2.2.1_QueryMetadata.csproj", "{5A350CEB-AA52-50AC-67FD-00B3786B44FC}"
+EndProject
+Project("{9b9175ad-e622-4577-b2af-816cfdaa48f2}") = "2.2.2_ManipulateData", "2.2.2_ManipulateData\2.2.2_ManipulateData.csproj", "{25450e93-e0c0-4f46-b2f3-fd097420cacc}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

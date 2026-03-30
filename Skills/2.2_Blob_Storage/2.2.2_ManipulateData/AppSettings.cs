@@ -1,12 +1,15 @@
 using Microsoft.Extensions.Configuration;
 
-namespace BlobStorage
+namespace ManipulateData
 {
     public class AppSettings
     {
-        public string? SASToken { get; set; }
-        public string? StorageAccountName { get; set; }
-        public string? ContainerName { get; set; }
+        public string? SourceSASConnectionString { get; set; }
+        public string? SourceStorageAccountName { get; set; }
+        public string? SourceContainerName { get; set; }
+        public string? DestinationSASConnectionString { get; set; }
+        public string? DestinationStorageAccountName { get; set; }
+        public string? DestinationContainerName { get; set; }
 
         public static AppSettings LoadFromFile()
         {
