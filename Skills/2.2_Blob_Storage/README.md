@@ -45,6 +45,16 @@ Key concepts covered:
     4. Updating and deleting blobs
     5. Overwriting existing blobs and handling conflicts
 
+#### 2.2.3_StorageTiers
+
+This project demonstrates how to manage and modify blob access tiers using the .NET SDK.
+
+Azure Blob Storage supports multiple access tiers to optimize for cost vs access frequency. This project shows how to:
+
+    1. Retrieve the current access tier of a blob
+    2. Change the tier programmatically
+    3. Observe how tier transitions affect blob properties
+
 ## Step 3 — Run the Applications
 
 From the project root, navigate to each project individually:
@@ -63,6 +73,15 @@ dotnet restore
 dotnet build
 dotnet run
 ```
+
+Run Storage Tiers Project
+```
+cd 2.2.3_StorageTiers
+dotnet restore
+dotnet build
+dotnet run
+```
+
 Notes / Best Practices
 - Use connection strings only for local development; in real applications, prefer:
     - Managed Identity
@@ -74,3 +93,7 @@ Notes / Best Practices
     - Stored as key-value pairs
     - Case-insensitive keys
     - Not indexed (important for performance considerations)
+- Access Tiers
+    - Hot → Frequently accessed data (higher storage cost, lower access cost)
+    - Cool → Infrequently accessed data (lower storage cost, higher access cost)
+    - Archive → Rarely accessed data (lowest cost, but requires rehydration before access)
