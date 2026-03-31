@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.2.1_QueryMetadata", "2.2.
 EndProject
 Project("{9b9175ad-e622-4577-b2af-816cfdaa48f2}") = "2.2.2_ManipulateData", "2.2.2_ManipulateData\2.2.2_ManipulateData.csproj", "{25450e93-e0c0-4f46-b2f3-fd097420cacc}"
 EndProject
+Project("{94b3269d-d583-47da-8eae-198c8a1ae5b6}") = "2.2.3_StorageTiers", "2.2.3_StorageTiers\2.2.3_StorageTiers.csproj", "{2f923987-c617-45dd-8355-e9d64ec2cd56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

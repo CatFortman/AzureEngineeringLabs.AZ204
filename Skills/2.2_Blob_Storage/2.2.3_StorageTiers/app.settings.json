@@ -1,0 +1,5 @@
+{
+    "SASConnectionString" : "<Your SAS Connection String>",
+    "AccountName" : "<Your Storage Account Name>",
+    "ContainerName" : "<Your Storage Container Name>"
+}
