@@ -4,6 +4,7 @@ using GoogleAuthentication.Models;
 
 namespace GoogleAuthentication.Controllers;
 
+[RequireHttps]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
