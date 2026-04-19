@@ -43,34 +43,23 @@ builder.Services.AddOpenIddict()
     })
     .AddServer(options =>
     {
-        // Endpoints
-        options.SetAuthorizationEndpointUris("/connect/authorize")
-               .SetTokenEndpointUris("/connect/token");
-
-        // Flow
         options.AllowAuthorizationCodeFlow()
                .RequireProofKeyForCodeExchange();
 
-        // Scopes
-        options.RegisterScopes(
-            OpenIddictConstants.Scopes.OpenId,
-            OpenIddictConstants.Scopes.Profile,
-            OpenIddictConstants.Scopes.Email);
+        options.SetAuthorizationEndpointUris("/connect/authorize")
+               .SetTokenEndpointUris("/connect/token");
 
-        // Development certs (OK for local dev only)
-        options.AddDevelopmentEncryptionCertificate()
-               .AddDevelopmentSigningCertificate();
+        options
+            .AddDevelopmentEncryptionCertificate()
+            .AddDevelopmentSigningCertificate();
 
-        // ASP.NET Core integration (NO passthrough)
+        options.DisableAccessTokenEncryption();
+
         options.UseAspNetCore()
-               .DisableTransportSecurityRequirement(); // allows http in dev if needed
-    })
-    .AddValidation(options =>
-    {
-        options.UseLocalServer();
-        options.UseAspNetCore();
-    });
+               .EnableAuthorizationEndpointPassthrough();
 
+        options.RegisterScopes("openid", "profile", "email");
+    });
 var app = builder.Build();
 
 //
@@ -96,11 +85,8 @@ using (var scope = app.Services.CreateScope())
             {
                 OpenIddictConstants.Permissions.Endpoints.Authorization,
                 OpenIddictConstants.Permissions.Endpoints.Token,
-
                 OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
-
                 OpenIddictConstants.Permissions.ResponseTypes.Code,
-
                 OpenIddictConstants.Permissions.Scopes.Profile,
                 OpenIddictConstants.Permissions.Scopes.Email
             }
@@ -119,11 +105,16 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
+app.UseDeveloperExceptionPage();
+app.UseForwardedHeaders();
 
-app.UseAuthentication();
+app.UseRouting();
+app.UseCors();
+
+app.UseAuthentication(); 
 app.UseAuthorization();
 
+app.MapControllers();
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
 
