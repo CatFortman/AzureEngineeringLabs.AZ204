@@ -9,15 +9,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        string storageAccount = "az204testing";
+        string storageAccount = "az204testingcf9d";
         string containerName = "az204-blob-testing";
         string blobName = System.IO.Path.GetRandomFileName();
 
 
-        DateTimeOffset startTimeKey = DateTimeOffset.Now;
-        DateTimeOffset endTimeKey = DateTimeOffset.Now.AddDays(7);
+        DateTimeOffset startTimeKey = DateTimeOffset.UtcNow;;
+        DateTimeOffset endTimeKey = DateTimeOffset.UtcNow.AddDays(7);
         DateTimeOffset startTimeSAS = startTimeKey;
-        DateTimeOffset endTimeSAS = startTimeKey.AddDays(1);
+        DateTimeOffset endTimeSAS = startTimeKey.AddYears(1);
 
         Uri blobEndpointUri = new Uri($"https://{storageAccount}.blob.core.windows.net");
 
@@ -40,18 +40,25 @@ class Program
             BlobName = blobName,
             Resource = "b", // b for blob, c for container
             StartsOn = startTimeSAS,
-            ExpiresOn = endTimeSAS
+            ExpiresOn = endTimeSAS,
+            Protocol = SasProtocol.Https
         }; 
 
         // We set the permissions Create, List, Add, Read, and Write
-        sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.List | BlobSasPermissions.Add | BlobSasPermissions.Read | BlobSasPermissions.Write);
+        sasBuilder.SetPermissions(BlobSasPermissions.All);
 
         string sasToken = sasBuilder.ToSasQueryParameters(userDelegationKey, storageAccount).ToString();
 
         System.Console.WriteLine($"SAS token: {sasToken}");
 
         // We can now use the SAS token to create a BlobClient and upload a blob
-        Uri blobUriWithSAS = new Uri($"{blobEndpointUri}/{containerName}/{blobName}?{sasToken}");
+        UriBuilder uriBuilder = new UriBuilder(blobEndpointUri)
+        {
+            Scheme = "https",
+            Host = $"{storageAccount}.blob.core.windows.net",
+            Path = $"{containerName}/{blobName}",
+            Query = sasToken
+        };
 
         // We create a random text file to upload
         using (System.IO.StreamWriter sw = System.IO.File.CreateText(blobName))
@@ -59,11 +66,10 @@ class Program
             sw.WriteLine("This is a test file for uploading to Azure Blob Storage using a SAS token.");
         }
 
-        BlobClient blobClientWithSAS = new BlobClient(blobUriWithSAS);
-
+        BlobClient blobClientWithSAS = new BlobClient(uriBuilder.Uri);
         blobClientWithSAS.Upload(blobName, true);
 
-        System.Console.WriteLine($"Blob uploaded successfully with SAS token. Blob URI: {blobUriWithSAS}");
+        System.Console.WriteLine($"Blob uploaded successfully with SAS token. Blob URI: {uriBuilder.Uri}");
 
         // Now we download the blob using the same SAS token to verify that it works
         Console.WriteLine($"Reading content from test blob {blobName}");
