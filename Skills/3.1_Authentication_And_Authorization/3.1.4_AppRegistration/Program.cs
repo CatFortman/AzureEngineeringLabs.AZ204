@@ -9,14 +9,27 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = options.DefaultPolicy;
-});
+builder.Services.Configure<OpenIdConnectOptions>(
+    OpenIdConnectDefaults.AuthenticationScheme,
+    options =>
+    {
+        options.Events ??= new OpenIdConnectEvents();
 
-// Add razor pages for Microsoft Identity UI (e.g., login, logout, access denied)
-builder.Services.AddRazorPages()
+        options.Events.OnRedirectToIdentityProvider = context =>
+        {
+            Console.WriteLine(
+                $"ResponseType: {context.ProtocolMessage.ResponseType}");
+
+            return Task.CompletedTask;
+        };
+    });
+    
+builder.Services.AddAuthorization();
+
+builder.Services.AddControllersWithViews()
     .AddMicrosoftIdentityUI();
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -24,10 +37,6 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
-}
-else
-{
-    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -42,7 +51,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Map Razor Pages for Microsoft Identity UI
 app.MapRazorPages();
 
 app.Run();
