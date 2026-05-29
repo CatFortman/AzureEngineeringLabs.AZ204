@@ -1,74 +1,162 @@
-# Study Resource: Microsoft Azure 204 Exam: Developing Solutions for Microsoft Azure
+# Azure Development and Solutions Engineering Labs (AZ-204)
 
 ## Introduction
 
-Welcome to the repository for skills related to the Microsoft Azure 204 exam: Developing Solutions for Microsoft Azure. This repository is intended to serve as a resource for those preparing for the exam, and it is based on the content from the exam reference book Developing Solutions for Microsoft Azure 2021 edition.
+This repository contains hands-on implementations, labs, notes, and experiments related to the skills covered in the Microsoft AZ-204 certification path: *Developing Solutions for Microsoft Azure*.
 
-### Study Resources
+The goal of this repository is not only exam preparation, but also practical experience building and integrating Azure services using real development workflows and tooling.
 
-- **Official Microsoft Study Guide:**
-  - [Microsoft Azure 204 Exam Study Guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-204)
+The projects and exercises in this repository focus on developing familiarity with:
 
-- **Official Labs:**
-  - [Microsoft Azure 204 Exam Labs](https://microsoftlearning.github.io/AZ-204-DevelopingSolutionsforMicrosoftAzure/)
+* Cloud-native application development
+* Azure SDKs and service integrations
+* Event-driven architecture concepts
+* Authentication and authorization
+* Storage and messaging services
+* Infrastructure and local development tooling
+* Monitoring and diagnostics
 
-- **Additional Study Guide Created by Thomas Maurer:**
-  - [Thomas Maurer's AZ-204 Study Guide](https://www.thomasmaurer.ch/2020/03/az-204-study-guide-developing-solutions-for-microsoft-azure/)
+This repository serves as both a personal knowledge base and a collection of applied Azure development exercises.
 
-### Tools Used
+---
 
-- VS Code
-- VS Code Extensions:
-    - C# Dev Kit (Microsoft)
-    - Bicep (Microsoft)
-    - Azure Tools (Microsoft)
-    - Azurite (Microsoft)
-- Visual Studio 2022
-- dotnet 9.0.306
-- azure cli 2.77.0
-- [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer)
-- [Azure Cosmos DB Emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator)
-- [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Cisolated-process%2Cnode-v4%2Cpython-v2%2Chttp-trigger%2Ccontainer-apps&pivots=programming-language-csharp#tabpanel_1_windows)
+## Skills and Technologies Practiced
 
+### Compute and Serverless
 
-## Skills
+* Azure Functions
+* Durable Functions
+* Function triggers and bindings
+* Background processing patterns
 
-Here is a list of skills implemented in this repository that are covered in Developing Solutions for Microsoft Azure 2021 edition:
+### Storage and Data
 
-* Skill 1.1: Implement solutions that use virtual machines (COMPLETED)
-* Skill 1.2: Create Azure App Service web apps (COMPLETED)
-* Skill 1.3: Implement Azure functions (COMPLETED)
-* Skill 2.1: Develop solutions that use Cosmos DB storage (COMPLETED)
-* Skill 2.2: Develop solutions that use Blob Storage (COMPLETED)
-* Skill 3.1: Implement user authentication and authorization
-* Skill 3.2: Implement secure cloud solutions
-* Skill 4.1: Implement caching and content delivery within solutions
-* Skill 4.2: Instrument solutions that support monitoring and logging
-* Skill 5.1: Develop an App Service Logic App
-* Skill 5.2: Implement API Management
-* Skill 5.3: Develop event-based solutions
-* Skill 5.4: Develop message-based solutions
+* Azure Blob Storage
+* Azure Queue Storage
+* Azure Table Storage
+* Azure Cosmos DB
+* Storage SDK integration
+* Data persistence workflows
 
+### Integration and Messaging
 
-## Labs
+* Event Grid
+* Queue-based workflows
+* Event-driven architecture patterns
+* Service integration concepts
 
-Here is a list of the hands-on labs that are provided by Microsoft for practical experience:
+### Security
 
-* Lab 01: Build a web application on Azure platform as a service offerings
-* Lab 02: Implement task processing logic by using Azure Functions
-* Lab 03: Retrieve Azure Storage resources and metadata by using the Azure Storage SDK for .NET
-* Lab 04: Construct a polyglot data solution
-* Lab 05: Deploy compute workloads by using images and containers
-* Lab 06: Authenticate by using OpenID Connect, MSAL, and .NET SDKs
-* Lab 07: Access resource secrets more securely across services
-* Lab 08: Create a multi-tier solution by using Azure services
-* Lab 09: Publish and subscribe to Event Grid events
-* Lab 10: Asynchronously process messages by using Azure Service Bus Queues
-* Lab 11: Monitor services that are deployed to Azure
-* Lab 12: Enhance a web application by using the Azure Content Delivery Network
-* Lab 13 (Optional): Create and configure an Azure web app
-* Lab 14 (Optional): Implement containerized solutions  
+* Managed Identity
+* Azure AD authentication
+* Role-based access control (RBAC)
+* Secure configuration handling
+* Secret management concepts
 
-  
-\
-Feel free to clone this repository and use the code and resources for your exam preparation. Good luck with your studies!
+### APIs and Application Development
+
+* REST API development
+* Azure SDK usage
+* HTTP-triggered Azure Functions
+* Configuration and environment management
+
+### Monitoring and Diagnostics
+
+* Application Insights
+* Logging and telemetry
+* Monitoring workflows
+* Local debugging and diagnostics
+
+### Infrastructure and Tooling
+
+* Azure CLI workflows
+* Local Azure emulation tools
+* Infrastructure experimentation
+* Cloud development tooling
+
+---
+
+## Current Focus Areas
+
+### Actively Implementing
+
+* Azure Functions
+* Blob Storage
+* Cosmos DB
+* Event-driven workflows
+* Azure SDK integration
+* Queue-based processing
+* Authentication and authorization
+* Monitoring and diagnostics
+
+### Currently Exploring
+
+* Durable Functions
+* API Management
+* CI/CD automation
+* Managed Identity
+* Infrastructure as Code (Bicep)
+* Distributed systems patterns
+* Cloud-native architecture design
+
+---
+
+## Repository Goals
+
+The objectives of this repository are to:
+
+* Develop practical Azure engineering skills
+* Explore cloud application architecture patterns
+* Build familiarity with Azure development tooling
+* Practice integrating multiple Azure services together
+* Create reusable implementation references and notes
+* Strengthen understanding of distributed and event-driven systems
+
+---
+
+## Study Resources
+
+### Official Microsoft Study Guide
+
+* [https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-204](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-204)
+
+### Official Microsoft Labs
+
+* [https://microsoftlearning.github.io/AZ-204-DevelopingSolutionsforMicrosoftAzure/](https://microsoftlearning.github.io/AZ-204-DevelopingSolutionsforMicrosoftAzure/)
+
+### Additional Study Guide by Thomas Maurer
+
+* [https://www.thomasmaurer.ch/2020/03/az-204-study-guide-developing-solutions-for-microsoft-azure/](https://www.thomasmaurer.ch/2020/03/az-204-study-guide-developing-solutions-for-microsoft-azure/)
+
+---
+
+## Development Tools
+
+### IDEs and Editors
+
+* Visual Studio 2022
+* VS Code
+
+### VS Code Extensions
+
+* C# Dev Kit (Microsoft)
+* Bicep (Microsoft)
+* Azure Tools (Microsoft)
+* Azurite (Microsoft)
+
+### SDKs and Tooling
+
+* .NET SDK 9.0.306
+* Azure CLI 2.77.0
+* Azure Functions Core Tools
+
+### Azure Development Utilities
+
+* Azure Storage Explorer
+* Azure Cosmos DB Emulator
+
+---
+
+## Notes
+
+Many implementations in this repository are intentionally exploratory and focused on understanding Azure platform capabilities, service integration patterns, and cloud development workflows through hands-on experimentation.
