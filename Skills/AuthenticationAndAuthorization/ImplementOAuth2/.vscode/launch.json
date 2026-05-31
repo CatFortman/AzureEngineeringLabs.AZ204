@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Launch",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/GoogleAuthentication/bin/Debug/net9.0/GoogleAuthentication.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/GoogleAuthentication",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_URLS": "https://localhost:7011;http://localhost:5291",
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
+    ]
+}
